@@ -1,0 +1,170 @@
+@charset "UTF-8";
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 14px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Sagoe UI', sans-serif;
+    background: #f7f7f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-card {
+    background: #fff;
+    border-radius: 1rem;
+    border: 1px solid #e5e5e5;
+    width: 100%;
+    max-width: 400px;
+    padding: 2.5rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+}
+
+.y-logo {
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #0f1419;
+    margin-bottom: 1.5rem;
+    align-self: flex-start;
+}
+
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.field-wrap {
+    width: 100%;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.field-wrap input {
+    width: 100%;
+    height: 4rem;
+    border-radius: 1rem;
+    border: 1.5px solid #cfd9de;
+    padding: 1.2rem 0.875rem 0.3rem;
+    font-size: 1rem;
+    color: #0f1419;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.field-wrap input:focus {
+    border-color: #1d9bf0;
+}
+
+.field-wrap label {
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: #536471;
+    pointer-events: none;
+    transition: all 0.15s;
+}
+
+.field-wrap input:focus + label,
+.field-wrap input:not(:placeholder-shown) + label {
+    top: 0.45rem;
+    transform: none;
+    font-size: 1rem;
+    color: #1d9fb0;
+}
+
+.field-wrap.error input {
+    border-color: #f4212e;
+}
+
+.field-wrap.error input:focus + label,
+.field-wrap.error input:not(:placeholder-shown) + label {
+    color: #f4212e;
+}
+
+.eye-btn {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #536471;
+    font-size: 1rem;
+}
+
+.error-msg {
+    color: #f4212e;
+    font-size: 1rem;
+    margin-top: -0.5rem;
+    margin-bottom: 0.5rem;
+    align-self: flex-start;
+}
+
+.forgot-link {
+    color: #0f1419;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    margin-bottom: 1.25rem;
+}
+
+.continue-btn {
+    width: 100%;
+    height: 3rem;
+    border-radius: 9999px;
+    background: #0f1419;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 1.25rem;
+}
+
+.continue-btn:hover {
+    background: #272c30;
+}
+
+.terms {
+    font-size: 1rem;
+    color: #536471;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.terms a {
+    color: #0f1419;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-link {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    color: #536471;
+}
+
+.signup-link a {
+    color: #1d9bf0;
+    text-decoration: none;
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('検索', ~{::link})}">
+  <link rel="stylesheet" th:href="@{/css/search.css}">
+</head>
+<body>
+  <div class="tl-root">
+    <div th:replace="~{layout :: nav}"></div>
+    <main class="tl-center">
+      <!--検索バー-->
+      <div class="search-header">
+        <a href="#" id="back-btn" class="back-btn" aria-label="戻る">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </a>
+        <form th:action="@{/search}" method="get" class="search-input-wrap">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input type="text" name="keyword" th:value="${keyword}" placeholder="検索" autofocus />
+        </form>
+      </div>
+      <!--タブ-->
+      <div class="tab-bar">
+        <a th:href="@{/search(keyword=${keyword}, tab='posts')}" class="tab" th:classappend="${tab == 'posts' or tab == null} ? 'active'">話題のポスト</a>
+        <a th:href="@{/search(keyword=${keyword}, tab='accounts')}" class="tab" th:classappend="${tab == 'accounts'} ? 'active'">アカウント</a>
+      </div>
+      <!--ポスト・最新タブ(users以外)-->
+      <div th:if="${tab != 'accounts'}">
+        <div th:each="post : ${posts}" class="post-item">
+          <img th:if="${post.avatarPath != null}" th:src="@{'/' + ${post.avatarPath}}" class="avatar" />
+          <div th:unless="${post.avatarPath != null}" class="avatar" th:text="${#strings.substring(post.username, 0, 1).toUpperCase()}">Y</div>
+          <div class="post-body">
+            <div class="post-header">
+              <span class="post-name" th:text="${post.username}"></span>
+              <span class="post-handle" th:text="'@' + ${post.handle}"></span>
+              <span class="post-time" th:text="'· ' + ${@timeFormatUtil.format(post.createdAt)}"></span>
+            </div>
+            <div class="post-content" th:text="${post.content}"></div>
+            <img th:if="${post.imagePath != null}"
+                 th:src="@{'/' + ${post.imagePath}}"
+                 class="post-img" />
+            <div class="post-foot">
+              <button class="foot-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+              </button>
+              <button class="foot-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div th:if="${#lists.isEmpty(posts)}" class="empty-state">
+          「<span th:text="${keyword}"></span>」の検索結果はありません
+        </div>
+      </div>
+      <!--アカウントタブ-->
+      <div th:if="${tab == 'accounts'}">
+        <div th:each="user : ${users}" class="user-item">
+          <a th:href="@{'/user/' + ${user.userId}}" class="avatar-link">
+            <img th:if="${user.avatarPath != null}" th:src="@{'/' + ${user.avatarPath}}" class="avatar" />
+            <div th:unless="${user.avatarPath != null}" class="avatar" th:text="${#strings.substring(user.username, 0, 1).toUpperCase()}"></div>
+          </a>
+          <div class="user-info">
+            <a th:href="@{'/user/' + ${user.userId}}" class="user-name" th:text="${user.username}"></a>
+            <div class="user-handle" th:text="'@' + ${user.handle}"></div>
+            <div class="user-bio" th:text="${user.bio}" th:if="${user.bio != null}"></div>
+          </div>
+          <form th:if="${user.userId != loginUserId}"
+                th:action="@{'/follow/' + ${user.userId}}" method="post">
+            <button th:if="${user.followedByMe}" type="submit" class="following-btn">フォロー中</button>
+            <button th:unless="${user.followedByMe}" type="submit" class="follow-btn">フォロー</button>
+          </form>
+        </div>
+        <div th:if="${#lists.isEmpty(users)}" class="empty-state">
+          「<span th:text="${keyword}"></span>」に一致するアカウントはありません
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="text/javascript" th:src="@{/js/search.js}"></script>
+</body>
+</html>

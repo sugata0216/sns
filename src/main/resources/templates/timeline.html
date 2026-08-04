@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('タイムライン', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/timeline.css}">
+</head>
+<body>
+    <div class="tl-root">
+        <div th:replace="~{layout :: nav}"></div>
+        <!--中央タイムライン-->
+        <main class="tl-center">
+            <div class="tab-bar">
+                <a th:href="@{/timeline(tab='recommended')}"
+                   th:class="${tab == 'recommended'} ? 'tab active' : 'tab'">おすすめ</a>
+                <a th:href="@{/timeline(tab='following')}"
+                   th:class="${tab == 'following'} ? 'tab active' : 'tab'">フォロー中</a>
+            </div>
+            <!--投稿フォーム-->
+            <div class="post-compose">
+                <img th:if="${avatarPath != null}" th:src="@{'/' + ${avatarPath}}" class="avatar" />
+                <div th:unless="${avatarPath != null}" class="avatar" th:text="${#strings.substring(username, 0, 1).toUpperCase()}">Y</div>
+                <div class="compose-area">
+                    <form th:action="@{/post}" th:object="${postForm}" method="post" enctype="multipart/form-data">
+                        <textarea th:field="*{content}" rows="2" placeholder="いまどうしてる?" name="content"></textarea>
+                        <div class="inline-error" id="post-error" style="display:none;"></div>
+                        <div class="reply-preview-wrap" id="post-preview-wrap" style="display:none;">
+                            <img id="post-preview-img" style="display:none;">
+                            <video id="post-preview-video" style="display:none;" controls></video>
+                            <button type="button" id="post-preview-remove" class="reply-preview-remove">×</button>
+                        </div>
+                        <div class="file-upload-wrap">
+                            <label for="image-input" class="file-upload-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                                    <circle cx="8.5" cy="8.5" r="1.5" />
+                                    <polyline points="21 15 16 10 5 21" />
+                                </svg>
+                                <span id="file-name-label">画像・動画を追加</span>
+                            </label>
+                            <input type="file" id="image-input" name="image" accept="image/*,video/*" class="file-upload-input">
+                        </div>
+                        <div class="inline-error" id="post-file-error" style="display:none;"></div>
+                        <div class="compose-actions">
+                            <button type="submit" class="submit-btn">ポストする</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--投稿一覧-->
+            <div th:each="post : ${posts}" class="post-item">
+                <a th:href="${post.userId == loginUserId} ? @{/profile} : @{'/user/' + ${post.userId}}">
+                    <img th:if="${post.avatarPath != null}" th:src="@{'/' + ${post.avatarPath}}" class="avatar" />
+                    <div th:unless="${post.avatarPath != null}" class="avatar" th:text="${#strings.substring(post.username, 0, 1).toUpperCase()}">U</div>
+                </a>
+                <div class="post-body">
+                    <div class="post-header">
+                        <a th:href="${post.userId == loginUserId} ? @{/profile} : @{'/user/' + ${post.userId}}" class="post-name" th:text="${post.username}"></a>
+                        <a th:href="${post.userId == loginUserId} ? @{/profile} : @{'/user/' + ${post.userId}}" class="post-handle" th:text="'@' + ${post.handle}"></a>
+                        <span class="post-time" th:text="'· ' + ${@timeFormatUtil.format(post.createdAt)}"></span>
+                    </div>
+                    <div class="post-content" th:text="${post.content}"></div>
+                    <img
+                        th:if="${!#strings.isEmpty(post.imagePath) and !#strings.endsWith(post.imagePath, '.mp4') and !#strings.endsWith(post.imagePath, '.mov') and !#strings.endsWith(post.imagePath, '.webm')}"
+                        th:src="@{'/' + ${post.imagePath}}"
+                        class="post-img">
+                    <video
+                        th:if="${!#strings.isEmpty(post.imagePath) and (#strings.endsWith(post.imagePath, '.mp4') or #strings.endsWith(post.imagePath, '.mov') or #strings.endsWith(post.imagePath, '.webm'))}"
+                        th:src="@{'/' + ${post.imagePath}}"
+                        class="post-img"
+                        controls>
+                    </video>
+                    <div class="post-foot">
+                        <!--ボタンクリックでモーダルを開く。data属性で投稿情報を渡す-->
+                        <button class="foot-btn comment-btn"
+                            th:data-post-id="${post.postId}"
+                            th:data-post-username="${post.username}"
+                            th:data-post-handle="${post.handle}"
+                            th:data-post-avatar="${post.avatarPath}"
+                            th:data-post-content="${post.content}">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            </svg>
+                            <span th:if="${post.commentCount > 0}" th:text="${post.commentCount}"></span>
+                        </button>
+                        <form th:action="@{'/like/' + ${post.postId}}" method="post">
+                            <button th:class="${post.likedByMe} ? 'foot-btn like-btn liked' : 'foot-btn like-btn'" type="submit">
+                                <svg width="18" height="18" viewBox="0 0 24 24"
+                                     th:fill="${post.likedByMe} ? '#f91880' : 'none'"
+                                     stroke="currentColor" stroke-width="1.8">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                                </svg>
+                                <span th:if="${post.likeCount > 0}" th:text="${post.likeCount}"></span>
+                            </button>
+                        </form>
+                        <form th:if="${post.userId == loginUserId}"
+                              class="delete-form"
+                              th:data-post-id="${post.postId}"
+                              th:action="@{'/post/delete/' + ${post.postId}}" method="post">
+                            <button class="foot-btn delete-btn" type="submit" aria-label="削除">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <polyline points="3 6 5 6 21 6" />
+                                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                                    <path d="M10 11v6" /><path d="M14 11v6" />
+                                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                                </svg>
+                            </button>
+                        </form>
+                        <button th:if="${post.userId == loginUserId}"
+                                class="foot-btn edit-btn-icon"
+                                type="button"
+                                aria-label="編集"
+                                th:data-post-id="${post.postId}"
+                                th:data-post-image="${post.imagePath}"
+                                th:data-post-content="${post.content}">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                <path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${#lists.isEmpty(posts)}" class="empty-state">
+                <span th:if="${tab == 'following'}">フォロー中のユーザーの投稿はまだありません</span>
+                <span th:unless="${tab == 'following'}">投稿はまだありません</span>
+            </div>
+            <!--削除確認モーダル(ページに1つだけ配置)-->
+            <div class="modal-overlay" id="delete-modal" aria-hidden="true">
+                <div class="modal delete-confirm-modal" role="dialog" aria-modal="true">
+                    <div class="delete-confirm-body">
+                        <h3 class="delete-confirm-title">ポストを削除しますか？</h3>
+                        <p class="delete-confirm-text">この操作は取り消せません。</p>
+                    </div>
+                    <div class="delete-confirm-actions">
+                        <button type="button" id="delete-confirm-btn" class="delete-confirm-btn">削除する</button>
+                        <button type="button" id="delete-cancel-btn" class="delete-cancel-btn">キャンセル</button>
+                    </div>
+                </div>
+            </div>
+            <!--編集モーダル(ページに1つだけ配置)-->
+            <div class="modal-overlay" id="edit-modal" aria-hidden="true">
+                <div class="modal edit-modal" role="dialog" aria-modal="true">
+                    <div class="modal-header">
+                        <button type="button" id="edit-close-btn" class="modal-close" aria-label="閉じる">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </button>
+                        <span class="modal-title">ポストを編集</span>
+                        <button type="submit" form="edit-post-form" class="modal-save-btn">保存</button>
+                    </div>
+                    <form id="edit-post-form" method="post" enctype="multipart/form-data" class="edit-modal-body">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <textarea id="edit-content-input" name="content" rows="5"></textarea>
+                        <div class="inline-error" id="edit-error" style="display:none;"></div>
+                        <!--現在の画像・動画のプレビュー-->
+                        <div id="edit-current-media-wrap" class="edit-media-wrap" style="display:none;">
+                            <img id="edit-current-img" style="display:none;">
+                            <video id="edit-current-video" style="display:none;" controls></video>
+                            <button type="button" id="edit-remove-media-btn" class="reply-preview-remove">×</button>
+                        </div>
+                        <input type="hidden" id="edit-remove-image-input" name="removeImage" value="false">
+                        <label for="edit-image-input" class="file-upload-btn">
+                            画像・動画を変更
+                        </label>
+                        <input type="file" id="edit-image-input" name="image" accept="image/*,video/*" class="file-upload-input">
+                        <div class="inline-error" id="edit-file-error" style="display:none;"></div>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <div th:replace="~{layout :: commentModal}"></div>
+        <div th:replace="~{layout :: aside}"></div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/file-validation.js}"></script>
+    <script type="text/javascript" th:src="@{/js/timeline.js}"></script>
+    <script type="text/javascript" th:src="@{/js/comment-modal.js}"></script>
+    <script type="text/javascript" th:src="@{/js/post-actions.js}"></script>
+</body>
+</html>

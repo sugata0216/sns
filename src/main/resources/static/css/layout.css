@@ -1,0 +1,104 @@
+@charset "UTF-8";
+html {
+    font-size: 14px;
+}
+
+/*左サイドバー*/
+.tl-left {
+    width: 5rem;
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    border-right: 1px solid #eff3f4;
+    position: sticky;
+    top: 0;
+}
+
+.y-logo {
+    padding: 1rem 0 1rem;
+}
+
+.y-logo a {
+    display: block;
+    line-height: 0;
+    cursor: pointer;
+}
+
+.nav-btn {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 9999px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f1419;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+.nav-btn:hover {
+    background: #e7e7e8;
+}
+
+.nav-btn.active svg {
+    stroke-width: 2.5;
+}
+
+/*通知ボタン:アイコンとバッジを重ねるための基準*/
+.nav-btn--notify {
+    position: relative;
+}
+
+/*未読バッジ*/
+.notify-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    min-width: 1rem;
+    height: 1rem;
+    padding: 0 4px;
+    border-radius: 9999px;
+    background: #1d9bf0;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    pointer-events: none;
+}
+/*右サイドバー*/
+.tl-right {
+    width: 20rem;
+    padding: 1rem;
+    flex-shrink: 0;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #eff3f4;
+    border-radius: 9999px;
+    padding: 1rem;
+    color: #536471;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #0f1419;
+    width: 100%;
+}
+
+.search-box input::placeholder {
+    color: #536471;
+}

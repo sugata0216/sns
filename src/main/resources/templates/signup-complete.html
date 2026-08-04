@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('登録完了', ~{::link})}">
+  <link rel="stylesheet" th:href="@{/css/signup-complete.css}">
+</head>
+<body>
+<div class="card">
+  <!--Yロゴ-->
+  <div class="y-logo">
+    <svg width="32" height="36" viewBox="0 0 36 40" fill="none">
+      <path d="M4 4 L18 20" stroke="#0f1419" stroke-width="4" stroke-linecap="round"/>
+      <path d="M32 4 L18 20" stroke="#0f1419" stroke-width="4" stroke-linecap="round"/>
+      <path d="M18 20 L18 36" stroke="#0f1419" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <!--メールアイコン-->
+  <div class="icon-wrap">
+    <svg width="32" height="36" viewBox="0 0 24 24" fill="none" stroke="#1d9bf0" stroke-width="1.8">
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+      <polyline points="22,6 12,13 2,6"/>
+    </svg>
+  </div>
+  <h1>ご登録ありがとうございます</h1>
+  <p class="desc">入力いただいたメールアドレス宛に確認メールを送信しました。</p>
+  <p class="desc">メール内のリンクをクリックして、登録を完了させてください。</p>
+  <p class="note">📪 メールが届かない場合は、迷惑メールフォルダもご確認ください。</p>
+</div>
+</body>
+</html>

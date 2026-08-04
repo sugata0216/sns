@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Cookieの使用について', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/cookies.css}">
+</head>
+<body>
+<div class="card">
+    <div class="y-logo">
+        <svg width="28" height="32" viewBox="0 0 36 40" fill="none">
+            <path d="M4 4 L18 20" stroke="#0f1419" stroke-width="4" stroke-linecap="round"/>
+            <path d="M32 4 L18 20" stroke="#0f1419" stroke-width="4" stroke-linecap="round"/>
+            <path d="M18 20 L18 36" stroke="#0f1419" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+    </div>
+    <h1>Cookieの使用について</h1>
+    <p class="updated">最終改定日：2026年7月24日</p>
+    <section>
+        <h2>1. Cookieとは</h2>
+        <p>Cookie（クッキー）とは、ウェブサイトを閲覧した際に、お使いのブラウザに保存される小さなテキストファイルです。当サービスでは、ユーザーの利便性向上のためにCookieおよびこれに類する技術（セッション情報等）を使用しています。</p>
+    </section>
+    <section>
+        <h2>2. 当サービスが使用するCookie</h2>
+        <p>当サービスでは、主に以下の目的でCookieを使用しています。</p>
+        <table class="cookie-table">
+            <thead>
+            <tr>
+                <th>種類</th>
+                <th>目的</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>セッションCookie</td>
+                <td>ログイン状態を維持するために使用します。ブラウザを閉じる、またはログアウトすると無効になります。</td>
+            </tr>
+            <tr>
+                <td>CSRF対策用Cookie</td>
+                <td>不正なリクエスト（クロスサイトリクエストフォージェリ）を防ぐために使用します。</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <h2>3. Cookieによって取得される情報</h2>
+        <p>当サービスが使用するCookieは、氏名、住所、電話番号など、それ単体で個人を特定できる情報を含みません。ログイン状態の維持やセキュリティ確保のための識別子として利用しています。</p>
+    </section>
+    <section>
+        <h2>4. Cookieの管理・無効化について</h2>
+        <p>ユーザーは、ブラウザの設定によりCookieの受け入れを拒否したり、既に保存されたCookieを削除したりすることができます。ただし、Cookieを無効にした場合、ログイン状態の維持ができなくなるなど、本サービスの一部機能がご利用いただけなくなる可能性があります。</p>
+    </section>
+    <section>
+        <h2>5. 本ページの変更</h2>
+        <p>当サービスは、必要と判断した場合には、ユーザーに通知することなくいつでも本ページの内容を変更できるものとします。変更後の内容は、本サービス上に表示した時点より効力を生じるものとします。</p>
+    </section>
+    <div class="back-wrap">
+        <a class="back-link" th:href="@{/signup}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>
+            新規登録に戻る
+        </a>
+    </div>
+</div>
+</body>
+</html>

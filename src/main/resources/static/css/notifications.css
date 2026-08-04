@@ -1,0 +1,194 @@
+@charset "UTF-8";
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 14px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Sagoe UI', sans-serif;
+    background: #f7f7f7;
+}
+
+.tl-root {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+}
+
+/*中央*/
+.tl-center {
+    flex: 1;
+    min-width: 0;
+    border-right: 1px solid #eff3f4;
+}
+
+.tab-bar {
+    display: flex;
+    border-bottom: 1px solid #eff3f4;
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(1rem);
+}
+
+.tab {
+    flex: 1;
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #536471;
+    border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+    color: #0f1419;
+    border-bottom-color: #1d9bf0;
+}
+
+/*ヘッダー*/
+.notif-header {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(1rem);
+    z-index: 10;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.notif-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f1419;
+}
+
+.gear-btn {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f1419;
+}
+
+.gear-btn:hover {
+    background: #e7e7e8;
+}
+
+/*通知アイテム*/
+.notif-item {
+    padding: 1rem;
+    border-bottom: 1px solid #eff3f4;
+    display: flex;
+    gap: 1rem;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.notif-item:hover {
+    background: #f7f9f9;
+}
+
+.avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: #dbeafe;
+    color: #1d4ed8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+/*操作アイコン列*/
+.notif-icon {
+    width: 3rem;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    padding-top: 2px;
+}
+
+/*通知本文*/
+.notif-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.notif-avatars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+.notif-avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: #dbeafe;
+    color: #1d4ed8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+.notif-text {
+    font-size: 1rem;
+    color: #0f1419;
+    line-height: 1.4;
+}
+
+.notif-text strong {
+    font-weight: 700;
+}
+
+.notif-preview {
+    font-size: 1rem;
+    color: #536471;
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.notif-time {
+    font-size: 1rem;
+    color: #536471;
+    margin-top: 2px;
+}
+
+/*空状態*/
+.empty-state {
+    padding: 3rem 1rem;
+    text-align: center;
+    font-size: 1rem;
+    color: #536471;
+}
+
+.notif-avatar-link {
+    display: block;
+    text-decoration: none;
+    flex-shrink: 0;
+}

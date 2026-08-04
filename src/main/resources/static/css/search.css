@@ -1,0 +1,349 @@
+@charset "UTF-8";
+html {
+    font-size: 14px;
+}
+
+.tl-root {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+}
+
+/*中央*/
+.tl-center {
+    flex: 1;
+    min-width: 0;
+    border-right: 1px solid #eff3f4;
+}
+
+.tab-bar {
+    display: flex;
+    border-bottom: 1px solid #eff3f4;
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(1rem);
+}
+
+.tab {
+    flex: 1;
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #536471;
+    border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+    color: #0f1419;
+    border-bottom-color: #1d9bf0;
+}
+
+.avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: #dbeafe;
+    color: #1d4ed8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+/*投稿一覧*/
+.post-item {
+    padding: 1rem;
+    border-bottom: 1px solid #eff3f4;
+    display: flex;
+    gap: 1rem;
+}
+
+.post-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2px;
+}
+
+.post-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f1419;
+}
+
+.post-handle,
+.post-time {
+    font-size: 1rem;
+    color: #536471;
+}
+
+.post-content {
+    font-size: 1rem;
+    color: #0f1419;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.post-img {
+    width: 21rem;
+}
+.post-foot {
+    display: flex;
+    gap: 2rem;
+}
+
+.foot-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #536471;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.15s;
+}
+
+.foot-btn:hover {
+    color: #1d9bf0;
+}
+
+/*検索ヘッダー*/
+.search-header {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid #eff3f4;
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(1rem);
+    z-index: 10;
+}
+
+.back-btn {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f1419;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.back-btn:hover {
+    background: #e7e7e8;
+}
+
+.search-input-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #eff3f4;
+    border-radius: 9999px;
+    padding: 1rem;
+    color: #536471;
+}
+
+.search-input-wrap input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #0f1419;
+    width: 100%;
+}
+
+.search-input-wrap input::placeholder {
+    color: #536471;
+}
+
+/*タブ*/
+.tab-bar {
+    display: flex;
+    border-bottom: 1px solid #eff3f4;
+    position: sticky;
+    top: 4rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(1rem);
+    z-index: 9;
+}
+
+.tab {
+    flex: 1;
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #536471;
+    border-bottom: 2px solid transparent;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+
+.tab:hover {
+    background: #f7f9f9;
+}
+
+.tab.active {
+    color: #0f1419;
+    border-bottom-color: #1d9bf0;
+}
+
+/*アカウント結果*/
+.user-item {
+    padding: 1rem;
+    border-bottom: 1px solid #eff3f4;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f1419;
+    text-decoration: none;
+    display: block;
+}
+
+.user-name:hover {
+    text-decoration: underline;
+}
+
+.user-handle {
+    font-size: 1rem;
+    color: #536471;
+}
+
+.user-bio {
+    font-size: 1rem;
+    color: #0f1419;
+    margin-top: 2px;
+}
+
+.follow-btn {
+    height: 2rem;
+    padding: 0 1rem;
+    border-radius: 9999px;
+    background: #0f1419;
+    color: #fff;
+    border: none;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.follow-btn:hover {
+    background: #272c30;
+}
+
+/*空状態*/
+.empty-state {
+    padding: 3rem 1rem;
+    text-align: center;
+    font-size: 1rem;
+    color: #536471;
+}
+
+/*右サイドバー フィルター*/
+.r-filter-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f1419;
+    margin-bottom: 1rem;
+}
+
+.r-filter-section {
+    margin-bottom: 1rem;
+}
+
+.r-filter-section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f1419;
+    margin-bottom: 1rem;
+}
+
+.r-filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    font-size: 1rem;
+    color: #0f1419;
+}
+
+.radio-circle {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 1.5px solid #cfd9de;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.radio-circle.checked {
+    background: #1d9bf0;
+    border-color: #1d9bf0;
+}
+
+.radio-circle.checked::after {
+    content: '';
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.avatar-link {
+    display: block;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+.following-btn {
+    height: 2rem;
+    padding: 0 1rem;
+    border-radius: 9999px;
+    background: #fff;
+    color: #0f1419;
+    border: 1px solid #cfd9de;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.following-btn:hover {
+    background: #fef2f2;
+    color: #f4212e;
+    border-color: #fecdd3;
+}

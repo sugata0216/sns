@@ -1,0 +1,204 @@
+@charset "UTF-8";
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 14px;
+}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f7f7f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*カード*/
+.signup-card {
+    background: #fff;
+    border-radius: 1rem;
+    border: 1px solid #e5e5e5;
+    width: 100%;
+    max-width: 400px;
+    padding: 2.5rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+}
+
+/*ロゴ*/
+.y-logo {
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #0f1419;
+    margin-bottom: 1.5rem;
+    align-self: flex-start;
+}
+
+.error {
+    color: red;
+}
+
+.signup-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/*フィールド共通*/
+.field-wrap {
+    width: 100%;
+    position: relative;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.field-wrap input,
+.field-wrap textarea {
+    width: 100%;
+    border-radius: 1rem;
+    border: 1.5px solid #cfd9de;
+    padding: 1.2rem 0.875rem 0.3rem;
+    font-size: 1rem;
+    color: #0f1419;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+}
+
+.field-wrap input {
+    height: 4rem;
+}
+
+.field-wrap textarea {
+    height: 7rem;
+    resize: none;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 1rem;
+    border: 1.5px solid #cfd9de;
+    padding: 1.4rem 0.875rem 0.5rem;
+    font-size: 1rem;
+    color: #0f1419;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+}
+
+.field-wrap input:focus,
+.field-wrap textarea:focus {
+    border-color: #1d9bf0;
+}
+
+/*input用ラベル*/
+.field-wrap.input-wrap label {
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: #536471;
+    pointer-events: none;
+    transition: all 0.15s;
+}
+
+.field-wrap.input-wrap.focused label,
+.field-wrap.input-wrap input:not(:placeholder-shown) + label {
+    top: 0.35rem;
+    transform: none;
+    font-size: 0.7rem;
+    color: #1d9bf0;
+}
+
+/*textarea用ラベル*/
+.field-wrap.textarea-wrap label {
+    position: absolute;
+    left: 0.875rem;
+    top: 0.35rem;
+    font-size: 1rem;
+    color: #536471;
+    pointer-events: none;
+    transition: color 0.15s;
+    line-height: 1;
+}
+
+/*フォーカス時・入力済みは色だけ変える*/
+.field-wrap.textarea-wrap.focused label,
+.field-wrap.textarea-wrap textarea:not(:placeholder-shown) + label {
+    color: #1d9bf0;
+}
+
+.field-wrap textarea:focus {
+    border-color: #1d9bf0;
+}
+
+/*パスワード表示トグル*/
+.eye-btn {
+    position: absolute;
+    right: 0.75rem;
+    top: 2rem;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #536471;
+    display: flex;
+    align-items: center;
+}
+
+/*登録ボタン*/
+.submit-btn {
+    width: 100%;
+    height: 3rem;
+    border-radius: 9999px;
+    background: #0f1419;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.submit-btn:hover {
+    background: #272c30;
+}
+
+/*利用規約テキスト*/
+.terms {
+    font-size: 1rem;
+    color: #536471;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.terms a {
+    color: #0f1419;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/*ログインリンク*/
+.login-link {
+    margin-top: 1.25rem;
+    font-size: 1rem;
+    color: #536471;
+}
+
+.login-link a {
+    color: #1d9bf0;
+    text-decoration: none;
+}

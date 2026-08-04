@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('ログイン', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+    <div class="login-card">
+        <div class="y-logo">
+            <!--Yロゴ SVG-->
+            <svg width="36" height="40" viewBox="0 0 36 40" fill="none">
+                <!--左上から交差点へ-->
+                <path d="M4 4 L18 20"
+                    stroke="#0f1419" stroke-width="4.5"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+                <!--右上から交差点へ-->
+                <path d="M32 4 L18 20"
+                    stroke="#0f1419" stroke-width="4.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                <!--交差点から下へ-->
+                <path d="M18 20 L18 33"
+                    stroke="#0f1419" stroke-width="4.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+        <h2>ログイン</h2>
+        <!--エラー表示(Spring Securityのデフォルトエラー)-->
+        <div class="error-msg" th:if="${param.error}">
+            メールアドレスまたはパスワードが正しくありません。
+        </div>
+        <form th:action="@{/login}" method="post" class="login-form">
+            <div class="field-wrap">
+                <!--placeholder=" "は必須(CSSの:not(:placeholder-shown)を効かせるため)-->
+                <input type="email" name="email" id="email" placeholder=" " required />
+                <label for="email">メールアドレス</label>
+            </div>
+            <div class="field-wrap">
+                <input type="password" name="password" id="password" placeholder=" " required />
+                <label for="password">パスワード</label>
+                <button type="button" class="eye-btn" id="eye-btn" aria-label="パスワードを表示">
+                    <!--目のアイコン(inline SVG)-->
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg>
+                </button>
+            </div>
+            <a th:href="@{/forgot-password}" class="forgot-link">パスワードをお忘れですか?</a>
+            <button type="submit" class="continue-btn">続ける</button>
+            <p class="terms">
+                続行することで、<a th:href="@{/terms}">利用規約</a>、<a th:href="@{/privacy}">プライバシーポリシー</a>および<a th:href="@{/cookies}">Cookieの使用</a>に同意したものとみなされます。
+            </p>
+        </form>
+        <p class="signup-link">
+            アカウントをお持ちでないですか? <a th:href="@{/signup}">新規登録</a>
+        </p>
+    </div>
+    <script th:src="@{/js/login.js}"></script>
+</body>
+</html>

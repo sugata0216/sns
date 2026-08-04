@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('コメント管理', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/comments.css}">
+</head>
+<body class="admin-body">
+    <div class="page">
+        <!--ヘッダー-->
+        <div class="page-header">
+            <div class="page-header-left">
+                <a th:href="@{/admin}" class="back-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    管理者TOPに戻る
+                </a>
+                <div>
+                    <div class="page-title">コメント管理</div>
+                    <div class="page-count" th:text="${#lists.size(comments)} + '件のコメント'"></div>
+                </div>
+            </div>
+        </div>
+        <!--テーブル-->
+        <div class="table-card">
+            <div class="table-card-header">
+                <span class="table-card-title">コメント一覧</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>投稿者</th>
+                        <th>内容</th>
+                        <th>日時</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="comment : ${comments}">
+                        <td class="id-cell" th:text="'#' + ${comment.commentId}"></td>
+                        <td>
+                            <div class="user-cell">
+                                <div class="user-avatar"
+                                     th:text="${#strings.substring(comment.username, 0, 1).toUpperCase()}"></div>
+                                <span th:text="${comment.username}"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="content-cell" th:text="${comment.content}"></div>
+                        </td>
+                        <td class="time-cell" th:text="${comment.createdAt}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--コメントなし-->
+            <div th:if="${#lists.isEmpty(comments)}" class="empty-state">
+                コメントはありません
+            </div>
+        </div>
+    </div>
+</body>
+</html>

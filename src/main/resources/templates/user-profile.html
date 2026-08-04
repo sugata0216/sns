@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('ユーザープロフィール', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/timeline.css}">
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+    <link rel="stylesheet" th:href="@{/css/user-profile.css}">
+</head>
+<body>
+    <div class="tl-root">
+        <div th:replace="~{layout :: nav}"></div>
+        <main class="tl-center">
+            <!--ページヘッダー-->
+            <div class="prof-page-header">
+                <div class="ph-left">
+                    <a href="#" id="back-btn" class="back-btn" aria-label="戻る">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15 18 9 12 15 6" />
+                        </svg>
+                    </a>
+                    <div>
+                        <div class="prof-page-name" th:text="${user.username}"></div>
+                        <div class="prof-page-count" th:text="${#lists.size(posts)} + '件のポスト'"></div>
+                    </div>
+                </div>
+                <!--フォローボタン-->
+                <div class="ph-right">
+                    <form th:action="@{'/follow/' + ${user.userId}}" method="post" class="follow-form">
+                        <!--フォロー済みの場合-->
+                        <button th:if="${isFollowing}"
+                                type="submit"
+                                class="following-btn">フォロー中</button>
+                        <!--未フォローの場合-->
+                        <button th:unless="${isFollowing}"
+                                type="submit"
+                                class="follow-btn">フォロー</button>
+                    </form>
+                </div>
+            </div>
+            <!--カバー&アバター-->
+            <div class="cover-wrap">
+                <div class="cover-img"></div>
+                <div class="avatar-wrap">
+                    <img th:if="${user.avatarPath != null}" th:src="@{'/' + ${user.avatarPath}}" class="prof-avatar" />
+                    <div th:unless="${user.avatarPath != null}" class="prof-avatar" th:text="${#strings.substring(user.username, 0, 1).toUpperCase()}"></div>
+                </div>
+            </div>
+            <!--プロフィール情報-->
+            <div class="prof-info">
+                <div class="prof-name" th:text="${user.username}"></div>
+                <div class="prof-handle" th:text="'@' + ${user.handle}"></div>
+                <div class="prof-bio"
+                     th:if="${user.bio != null and !user.bio.isEmpty()}"
+                     th:text="${user.bio}"></div>
+                <div class="prof-meta">
+                    <div class="prof-meta-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <rect x="3" y="4" width="18" height="18" rx="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                        <span th:text="${user.createdAt != null} ? ${#temporals.format(user.createdAt, 'yyyy年MM月')} + 'からYを利用しています' : 'Yを利用中'"></span>
+                    </div>
+                </div>
+                <div class="prof-follow">
+                    <div><span class="follow-count" th:text="${followingCount}">0</span> <span class="follow-label">フォロー中</span></div>
+                    <div><span class="follow-count" th:text="${followerCount}">0</span> <span class="follow-label">フォロワー</span></div>
+                </div>
+            </div>
+            <!--タブ-->
+            <div class="tab-bar">
+                <div class="tab active">ポスト</div>
+            </div>
+            <!--投稿一覧-->
+            <div th:each="post : ${posts}" class="post-item">
+                <img th:if="${user.avatarPath != null}" th:src="@{'/' + ${user.avatarPath}}" class="avatar" />
+                <div th:unless="${user.avatarPath != null}" class="avatar" th:text="${#strings.substring(user.username, 0, 1).toUpperCase()}"></div>
+                <div class="post-body">
+                    <div class="post-header">
+                        <span class="post-name" th:text="${user.username}"></span>
+                        <span class="post-handle" th:text="'@' + ${user.handle}"></span>
+                        <span class="post-time" th:text="'· ' + ${@timeFormatUtil.format(post.createdAt)}"></span>
+                    </div>
+                    <div class="post-content" th:text="${post.content}"></div>
+                    <img
+                        th:if="${!#strings.isEmpty(post.imagePath) and !#strings.endsWith(post.imagePath, '.mp4') and !#strings.endsWith(post.imagePath, '.mov') and !#strings.endsWith(post.imagePath, '.webm')}"
+                        th:src="@{'/' + ${post.imagePath}}"
+                        class="post-img">
+                    <video
+                        th:if="${!#strings.isEmpty(post.imagePath) and (#strings.endsWith(post.imagePath, '.mp4') or #strings.endsWith(post.imagePath, '.mov') or #strings.endsWith(post.imagePath, '.webm'))}"
+                        th:src="@{'/' + ${post.imagePath}}"
+                        class="post-img"
+                        controls>
+                    </video>
+                    <div class="post-foot">
+                        <button class="foot-btn comment-btn"
+                                th:data-post-id="${post.postId}"
+                                th:data-post-username="${user.username}"
+                                th:data-post-handle="${user.handle}"
+                                th:data-post-avatar="${user.avatarPath}"
+                                th:data-post-content="${post.content}">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            </svg>
+                            <span th:if="${post.commentCount > 0}" th:text="${post.commentCount}"></span>
+                        </button>
+                        <form th:action="@{'/like/' + ${post.postId}}" method="post">
+                            <button th:class="${post.likedByMe} ? 'foot-btn like-btn liked' : 'foot-btn like-btn'" type="submit">
+                                <svg width="18" height="18" viewBox="0 0 24 24"
+                                     th:fill="${post.likedByMe} ? '#f91880' : 'none'"
+                                     stroke="currentColor" stroke-width="1.8">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                                </svg>
+                                <span th:if="${post.likeCount > 0}" th:text="${post.likeCount}"></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${#lists.isEmpty(posts)}" class="empty-state">
+                まだポストがありません
+            </div>
+        </main>
+        <div th:replace="~{layout :: aside}"></div>
+        <div th:replace="~{layout :: commentModal}"></div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/file-validation.js}"></script>
+    <script type="text/javascript" th:src="@{/js/user-profile.js}"></script>
+    <script type="text/javascript" th:src="@{/js/comment-modal.js}"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('ユーザー編集', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/edit-user.css}">
+</head>
+<body class="admin-body">
+    <div class="page">
+        <!--ヘッダー-->
+        <div class="page-header">
+            <div class="page-header-left">
+                <a th:href="@{/admin/users}" class="back-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    ユーザー管理へ戻る
+                </a>
+                <div class="page-title">ユーザー編集</div>
+            </div>
+        </div>
+        <!--編集カード-->
+        <div class="edit-card">
+            <!--ユーザー情報ヘッダー-->
+            <div class="edit-card-header">
+                <img th:if="${user.avatarPath != null}" th:src="@{'/' + ${user.avatarPath}}" class="edit-avatar" />
+                <div th:unless="${user.avatarPath != null}" class="edit-avatar"
+                     th:text="${#strings.substring(user.username, 0, 1).toUpperCase()}"></div>
+                <div class="edit-header-info">
+                    <div class="edit-username" th:text="${user.username}"></div>
+                    <div class="edit-email" th:text="${user.email}"></div>
+                </div>
+            </div>
+            <!--フォーム-->
+            <div class="edit-body">
+                <form th:action="@{/admin/users/edit}" method="post">
+                    <input type="hidden" name="userId" th:value="${user.userId}" />
+                    <!--読み取り専用フィールド-->
+                    <div class="info-row">
+                        <span class="info-label">ユーザー名</span>
+                        <span class="info-value" th:text="${user.username}"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">メールアドレス</span>
+                        <span class="info-value" th:text="${user.email}"></span>
+                    </div>
+                    <!--ロール選択-->
+                    <div class="field-wrap">
+                        <label class="field-label" for="roleId">ロール</label>
+                        <select class="field-select" name="roleId" id="roleId">
+                            <option th:each="role : ${roles}"
+                                    th:value="${role.roleId}"
+                                    th:text="${role.roleName}"
+                                    th:selected="${role.roleId == user.roleId}">
+                            </option>
+                        </select>
+                    </div>
+                    <!--ボタン-->
+                    <div class="edit-footer">
+                        <a th:href="@{/admin/users}" class="cancel-btn">キャンセル</a>
+                        <button type="submit" class="save-btn">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
