@@ -17,9 +17,17 @@ public class ResendMailService {
     @Value("${resend.from-email}")
     private String fromEmail;
 
+    @Value("${app.mail-enabled:false}") // ★追加：デフォルトは無効
+    private boolean mailEnabled;
+
     private final RestClient restClient = RestClient.create();
 
     public void send(String toEmail, String subject, String htmlBody) {
+        if (!mailEnabled) {
+            System.out.println("メール送信は無効化されています。宛先: " + toEmail + " / 件名: " + subject);
+            return; // ★何もせず終了
+        }
+
         Map<String, Object> body = Map.of(
                 "from",    fromEmail,
                 "to",      new String[]{toEmail},

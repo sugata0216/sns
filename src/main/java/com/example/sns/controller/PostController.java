@@ -35,7 +35,9 @@ public class PostController {
             @AuthenticationPrincipal CustomUserDetails loginUser,
             @ModelAttribute PostForm postForm,
             Model model) throws IOException {
-
+        System.out.println("=== /post に到達 content=" + postForm.getContent()
+                + " image=" + (postForm.getImage() != null ? postForm.getImage().getOriginalFilename() : "null")
+                + " size=" + (postForm.getImage() != null ? postForm.getImage().getSize() : 0));
         if (postForm.getContent() == null || postForm.getContent().isBlank()) {
             model.addAttribute("postError", "投稿内容を入力してください。");
             model.addAttribute("posts", postService.findAllWithLikeStatus(loginUser.getUser().getUserId()));

@@ -3,6 +3,7 @@ package com.example.sns.service;
 import com.example.sns.entity.Role;
 import com.example.sns.entity.User;
 import com.example.sns.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,8 @@ public class UserService {
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
-
+    @Value("${app.mail-enabled:false}") // ★追加
+    private boolean mailEnabled;
     public UserService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder, MailService mailService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
@@ -43,6 +45,10 @@ public class UserService {
         Role role = roleService.findByName("ROLE_USER");
         user.setRoleId(role.getRoleId());
         user.setHandle(generateUniqueHandle());
+        // ★追加：メール送信が無効な場合は登録と同時にverify済みにする
+        if (!mailEnabled) {
+            user.setVerified(true);
+        }
         userRepository.insert(user);
         return null;
     }
