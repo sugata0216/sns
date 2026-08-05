@@ -4,6 +4,7 @@ import com.example.sns.entity.Post;
 import com.example.sns.form.PostForm;
 import com.example.sns.security.CustomUserDetails;
 import com.example.sns.service.PostService;
+import com.example.sns.service.SupabaseStorageService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
