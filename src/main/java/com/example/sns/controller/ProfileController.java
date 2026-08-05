@@ -6,6 +6,7 @@ import com.example.sns.form.ProfileForm;
 import com.example.sns.security.CustomUserDetails;
 import com.example.sns.service.FollowService;
 import com.example.sns.service.PostService;
+import com.example.sns.service.SupabaseStorageService;
 import com.example.sns.service.UserService;
 import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,11 +31,12 @@ public class ProfileController {
     private final PostService postService;
     private final UserService userService;
     private final FollowService followService;
-
-    public ProfileController(PostService postService, UserService userService, FollowService followService) {
+    private final SupabaseStorageService storageService;
+    public ProfileController(PostService postService, UserService userService, FollowService followService, SupabaseStorageService storageService) {
         this.postService = postService;
         this.userService = userService;
         this.followService = followService;
+        this.storageService = storageService;
     }
     @GetMapping("/profile")
     public String profile(
@@ -55,18 +57,18 @@ public class ProfileController {
     public String updateProfile(
             @AuthenticationPrincipal CustomUserDetails loginUser,
             @ModelAttribute ProfileForm profileForm) throws IOException {
+
         User user = new User();
         user.setUserId(loginUser.getUser().getUserId());
         user.setUsername(profileForm.getUsername());
         user.setBio(profileForm.getBio());
         userService.updateProfile(user);
+
         MultipartFile avatar = profileForm.getAvatar();
         if (avatar != null && !avatar.isEmpty()) {
-            String fileName = UUID.randomUUID() + "_" + avatar.getOriginalFilename();
-            Path path = Paths.get("uploads", fileName);
-            Files.createDirectories(path.getParent());
-            avatar.transferTo(path);
-            userService.updateAvatar(loginUser.getUser().getUserId(), fileName);
+            // ★ローカル保存 → Supabase Storage にアップロード
+            String publicUrl = storageService.upload(avatar);
+            userService.updateAvatar(loginUser.getUser().getUserId(), publicUrl);
         }
         return "redirect:/profile";
     }

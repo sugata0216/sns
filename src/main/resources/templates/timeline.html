@@ -16,7 +16,9 @@
             </div>
             <!--投稿フォーム-->
             <div class="post-compose">
-                <img th:if="${avatarPath != null}" th:src="@{'/' + ${avatarPath}}" class="avatar" />
+                <img th:if="${avatarPath != null}"
+                     th:src="${#strings.startsWith(avatarPath, 'http') ? avatarPath : '/' + avatarPath}"
+                     class="avatar" />
                 <div th:unless="${avatarPath != null}" class="avatar" th:text="${#strings.substring(username, 0, 1).toUpperCase()}">Y</div>
                 <div class="compose-area">
                     <form th:action="@{/post}" th:object="${postForm}" method="post" enctype="multipart/form-data">
@@ -48,7 +50,9 @@
             <!--投稿一覧-->
             <div th:each="post : ${posts}" class="post-item">
                 <a th:href="${post.userId == loginUserId} ? @{/profile} : @{'/user/' + ${post.userId}}">
-                    <img th:if="${post.avatarPath != null}" th:src="@{'/' + ${post.avatarPath}}" class="avatar" />
+                    <img th:if="${post.avatarPath != null}"
+                         th:src="${#strings.startsWith(post.avatarPath, 'http') ? post.avatarPath : '/' + post.avatarPath}"
+                         class="avatar" />
                     <div th:unless="${post.avatarPath != null}" class="avatar" th:text="${#strings.substring(post.username, 0, 1).toUpperCase()}">U</div>
                 </a>
                 <div class="post-body">
@@ -59,14 +63,14 @@
                     </div>
                     <div class="post-content" th:text="${post.content}"></div>
                     <img
-                        th:if="${!#strings.isEmpty(post.imagePath) and !#strings.endsWith(post.imagePath, '.mp4') and !#strings.endsWith(post.imagePath, '.mov') and !#strings.endsWith(post.imagePath, '.webm')}"
-                        th:src="@{'/' + ${post.imagePath}}"
-                        class="post-img">
+                            th:if="${!#strings.isEmpty(post.imagePath) and !#strings.endsWith(post.imagePath, '.mp4') and !#strings.endsWith(post.imagePath, '.mov') and !#strings.endsWith(post.imagePath, '.webm')}"
+                            th:src="${#strings.startsWith(post.imagePath, 'http') ? post.imagePath : '/' + post.imagePath}"
+                            class="post-img">
                     <video
-                        th:if="${!#strings.isEmpty(post.imagePath) and (#strings.endsWith(post.imagePath, '.mp4') or #strings.endsWith(post.imagePath, '.mov') or #strings.endsWith(post.imagePath, '.webm'))}"
-                        th:src="@{'/' + ${post.imagePath}}"
-                        class="post-img"
-                        controls>
+                            th:if="${!#strings.isEmpty(post.imagePath) and (#strings.endsWith(post.imagePath, '.mp4') or #strings.endsWith(post.imagePath, '.mov') or #strings.endsWith(post.imagePath, '.webm'))}"
+                            th:src="${#strings.startsWith(post.imagePath, 'http') ? post.imagePath : '/' + post.imagePath}"
+                            class="post-img"
+                            controls>
                     </video>
                     <div class="post-foot">
                         <!--ボタンクリックでモーダルを開く。data属性で投稿情報を渡す-->

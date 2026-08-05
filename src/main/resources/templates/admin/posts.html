@@ -41,7 +41,9 @@
                         <td class="id-cell" th:text="'#' + ${post.postId}"></td>
                         <td>
                             <div class="user-cell">
-                                <img th:if="${post.avatarPath != null}" th:src="@{'/' + ${post.avatarPath}}" class="user-avatar" />
+                                <img th:if="${post.avatarPath != null}"
+                                     th:src="${#strings.startsWith(post.avatarPath, 'http') ? post.avatarPath : '/' + post.avatarPath}"
+                                     class="user-avatar" />
                                 <div th:unless="${post.avatarPath != null}" class="user-avatar"
                                      th:text="${#strings.substring(post.username, 0, 1).toUpperCase()}"></div>
                                 <span th:text="${post.username}"></span>
@@ -52,10 +54,10 @@
                         </td>
                         <td>
                             <img th:if="${!#strings.isEmpty(post.imagePath) and !#strings.endsWith(post.imagePath, '.mp4') and !#strings.endsWith(post.imagePath, '.mov') and !#strings.endsWith(post.imagePath, '.webm')}"
-                                th:src="@{'/' + ${post.imagePath}}"
-                                class="post-img" alt="投稿画像">
+                                 th:src="${#strings.startsWith(post.imagePath, 'http') ? post.imagePath : '/' + post.imagePath}"
+                                 class="post-img" alt="投稿画像">
                             <video th:if="${!#strings.isEmpty(post.imagePath) and (#strings.endsWith(post.imagePath, '.mp4') or #strings.endsWith(post.imagePath, '.mov') or #strings.endsWith(post.imagePath, '.webm'))}"
-                                   th:src="@{'/' + ${post.imagePath}}"
+                                   th:src="${#strings.startsWith(post.imagePath, 'http') ? post.imagePath : '/' + post.imagePath}"
                                    class="post-img"
                                    controls>
                             </video>

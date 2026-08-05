@@ -61,12 +61,14 @@ document.querySelectorAll('.edit-btn-icon').forEach(btn => {
         editCurrentVideo.style.display = 'none';
 
         if (imagePath && imagePath !== 'null') {
+            // ★ SupabaseのフルURLかローカルパスかを判定
+            const src = imagePath.startsWith('http') ? imagePath : `/${imagePath}`;
             const isVideo = /\.(mp4|mov|webm)$/i.test(imagePath);
             if (isVideo) {
-                editCurrentVideo.src = `/${imagePath}`;
+                editCurrentVideo.src = src;
                 editCurrentVideo.style.display = 'block';
             } else {
-                editCurrentImg.src = `/${imagePath}`;
+                editCurrentImg.src = src;
                 editCurrentImg.style.display = 'block';
             }
             editCurrentMediaWrap.style.display = 'block';

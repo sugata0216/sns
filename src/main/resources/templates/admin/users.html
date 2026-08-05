@@ -40,7 +40,9 @@
           <td class="id-cell" th:text="'#' + ${user.userId}"></td>
           <td>
             <div class="user-cell">
-              <img th:if="${user.avatarPath != null}" th:src="@{'/' + ${user.avatarPath}}" class="user-avatar" />
+              <img th:if="${user.avatarPath != null}"
+                   th:src="${#strings.startsWith(user.avatarPath, 'http') ? user.avatarPath : '/' + user.avatarPath}"
+                   class="user-avatar" />
               <div th:unless="${user.avatarPath != null}" class="user-avatar"
                    th:text="${#strings.substring(user.username, 0, 1).toUpperCase()}"></div>
               <span th:text="${user.username}"></span>

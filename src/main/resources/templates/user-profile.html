@@ -40,7 +40,9 @@
             <div class="cover-wrap">
                 <div class="cover-img"></div>
                 <div class="avatar-wrap">
-                    <img th:if="${user.avatarPath != null}" th:src="@{'/' + ${user.avatarPath}}" class="prof-avatar" />
+                    <img th:if="${user.avatarPath != null}"
+                         th:src="${#strings.startsWith(user.avatarPath, 'http') ? user.avatarPath : '/' + user.avatarPath}"
+                         class="prof-avatar" />
                     <div th:unless="${user.avatarPath != null}" class="prof-avatar" th:text="${#strings.substring(user.username, 0, 1).toUpperCase()}"></div>
                 </div>
             </div>
@@ -73,7 +75,9 @@
             </div>
             <!--投稿一覧-->
             <div th:each="post : ${posts}" class="post-item">
-                <img th:if="${user.avatarPath != null}" th:src="@{'/' + ${user.avatarPath}}" class="avatar" />
+                <img th:if="${user.avatarPath != null}"
+                     th:src="${#strings.startsWith(user.avatarPath, 'http') ? user.avatarPath : '/' + user.avatarPath}"
+                     class="avatar" />
                 <div th:unless="${user.avatarPath != null}" class="avatar" th:text="${#strings.substring(user.username, 0, 1).toUpperCase()}"></div>
                 <div class="post-body">
                     <div class="post-header">
@@ -83,14 +87,14 @@
                     </div>
                     <div class="post-content" th:text="${post.content}"></div>
                     <img
-                        th:if="${!#strings.isEmpty(post.imagePath) and !#strings.endsWith(post.imagePath, '.mp4') and !#strings.endsWith(post.imagePath, '.mov') and !#strings.endsWith(post.imagePath, '.webm')}"
-                        th:src="@{'/' + ${post.imagePath}}"
-                        class="post-img">
+                            th:if="${!#strings.isEmpty(post.imagePath) and !#strings.endsWith(post.imagePath, '.mp4') and !#strings.endsWith(post.imagePath, '.mov') and !#strings.endsWith(post.imagePath, '.webm')}"
+                            th:src="${#strings.startsWith(post.imagePath, 'http') ? post.imagePath : '/' + post.imagePath}"
+                            class="post-img">
                     <video
-                        th:if="${!#strings.isEmpty(post.imagePath) and (#strings.endsWith(post.imagePath, '.mp4') or #strings.endsWith(post.imagePath, '.mov') or #strings.endsWith(post.imagePath, '.webm'))}"
-                        th:src="@{'/' + ${post.imagePath}}"
-                        class="post-img"
-                        controls>
+                            th:if="${!#strings.isEmpty(post.imagePath) and (#strings.endsWith(post.imagePath, '.mp4') or #strings.endsWith(post.imagePath, '.mov') or #strings.endsWith(post.imagePath, '.webm'))}"
+                            th:src="${#strings.startsWith(post.imagePath, 'http') ? post.imagePath : '/' + post.imagePath}"
+                            class="post-img"
+                            controls>
                     </video>
                     <div class="post-foot">
                         <button class="foot-btn comment-btn"

@@ -21,7 +21,9 @@
         <div class="edit-card">
             <!--ユーザー情報ヘッダー-->
             <div class="edit-card-header">
-                <img th:if="${user.avatarPath != null}" th:src="@{'/' + ${user.avatarPath}}" class="edit-avatar" />
+                <img th:if="${user.avatarPath != null}"
+                     th:src="${#strings.startsWith(user.avatarPath, 'http') ? user.avatarPath : '/' + user.avatarPath}"
+                     class="edit-avatar" />
                 <div th:unless="${user.avatarPath != null}" class="edit-avatar"
                      th:text="${#strings.substring(user.username, 0, 1).toUpperCase()}"></div>
                 <div class="edit-header-info">

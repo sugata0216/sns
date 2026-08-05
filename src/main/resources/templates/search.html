@@ -29,7 +29,9 @@
       <!--ポスト・最新タブ(users以外)-->
       <div th:if="${tab != 'accounts'}">
         <div th:each="post : ${posts}" class="post-item">
-          <img th:if="${post.avatarPath != null}" th:src="@{'/' + ${post.avatarPath}}" class="avatar" />
+          <img th:if="${post.avatarPath != null}"
+               th:src="${#strings.startsWith(post.avatarPath, 'http') ? post.avatarPath : '/' + post.avatarPath}"
+               class="avatar" />
           <div th:unless="${post.avatarPath != null}" class="avatar" th:text="${#strings.substring(post.username, 0, 1).toUpperCase()}">Y</div>
           <div class="post-body">
             <div class="post-header">
@@ -39,7 +41,7 @@
             </div>
             <div class="post-content" th:text="${post.content}"></div>
             <img th:if="${post.imagePath != null}"
-                 th:src="@{'/' + ${post.imagePath}}"
+                 th:src="${#strings.startsWith(post.imagePath, 'http') ? post.imagePath : '/' + post.imagePath}"
                  class="post-img" />
             <div class="post-foot">
               <button class="foot-btn">
@@ -63,7 +65,9 @@
       <div th:if="${tab == 'accounts'}">
         <div th:each="user : ${users}" class="user-item">
           <a th:href="@{'/user/' + ${user.userId}}" class="avatar-link">
-            <img th:if="${user.avatarPath != null}" th:src="@{'/' + ${user.avatarPath}}" class="avatar" />
+            <img th:if="${user.avatarPath != null}"
+                 th:src="${#strings.startsWith(user.avatarPath, 'http') ? user.avatarPath : '/' + user.avatarPath}"
+                 class="avatar" />
             <div th:unless="${user.avatarPath != null}" class="avatar" th:text="${#strings.substring(user.username, 0, 1).toUpperCase()}"></div>
           </a>
           <div class="user-info">

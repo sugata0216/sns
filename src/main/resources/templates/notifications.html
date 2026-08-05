@@ -9,7 +9,7 @@
         <main class="tl-center">
             <!--ヘッダー-->
             <div class="notif-header">
-                <span class="notif-title">通知</span>
+                <span class="notif-title">通知</span>Q
             </div>
             <!--タブ-->
             <div class="tab-bar">
@@ -46,7 +46,7 @@
                     <div class="notif-avatars">
                         <a th:href="@{'/user/' + ${notification.senderId}}" class="notif-avatar-link">
                             <img th:if="${notification.avatarPath != null}"
-                                 th:src="@{'/' + ${notification.avatarPath}}"
+                                 th:src="${#strings.startsWith(notification.avatarPath, 'http') ? notification.avatarPath : '/' + notification.avatarPath}"
                                  class="notif-avatar" />
                             <div th:unless="${notification.avatarPath != null}"
                                  class="notif-avatar"
