@@ -37,27 +37,29 @@ public interface UserMapper {
         """)
     User findById(long userId);
     @Insert("""
-        INSERT INTO users
-        (
-         username,
-         email,
-         password,
-         role_id,
-         bio,
-         verification_token,
-         handle
-        )
-        VALUES 
-        (
-         #{username},
-         #{email},
-         #{password},
-         1,
-         #{bio},
-         #{verificationToken},
-         #{handle}
-        )
-        """)
+    INSERT INTO users
+    (
+     username,
+     email,
+     password,
+     role_id,
+     bio,
+     verification_token,
+     handle,
+     verified
+    )
+    VALUES 
+    (
+     #{username},
+     #{email},
+     #{password},
+     1,
+     #{bio},
+     #{verificationToken},
+     #{handle},
+     #{verified}
+    )
+    """)
     @Options(useGeneratedKeys = true, keyProperty = "userId")
     int insert(User user);
     @Update("""
