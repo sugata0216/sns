@@ -4,10 +4,10 @@ import com.example.sns.entity.User;
 import com.example.sns.form.SignupForm;
 import com.example.sns.service.MailService;
 import com.example.sns.service.UserService;
+import org.springframework.beans.factory.annotation.Value; // ★追加
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +20,9 @@ public class SignupController {
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
 
+    @Value("${app.mail-enabled:false}") // ★追加
+    private boolean mailEnabled;
+
     public SignupController(UserService userService, PasswordEncoder passwordEncoder, MailService mailService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
@@ -31,6 +34,7 @@ public class SignupController {
         model.addAttribute("signupForm", new SignupForm());
         return "signup";
     }
+
     @PostMapping("/signup")
     public String signup(
             @ModelAttribute SignupForm signupForm,
@@ -38,7 +42,6 @@ public class SignupController {
         User user = new User();
         user.setUsername(signupForm.getUsername());
         user.setEmail(signupForm.getEmail());
-        // パスワードは暗号化して保存
         user.setPassword(passwordEncoder.encode(signupForm.getPassword()));
         user.setBio(signupForm.getBio());
         String token = UUID.randomUUID().toString();
@@ -49,9 +52,16 @@ public class SignupController {
             model.addAttribute("errorMessage", errorMessage);
             return "signup";
         }
+
+        if (!mailEnabled) {
+            // ★メール無効時はverificationメールを送らず、直接ログイン画面へ
+            return "redirect:/login?registered";
+        }
+
         mailService.sendVerificationMail(user);
         return "signup-complete";
     }
+
     @GetMapping("/verify")
     public String verify(String token, Model model) {
         boolean success = userService.verify(token);
