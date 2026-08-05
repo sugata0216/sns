@@ -15,7 +15,8 @@ document.querySelectorAll('.comment-btn').forEach(btn => {
         document.getElementById('modal-post-id').value = postId;
         const modalAvatarWrap = document.getElementById('modal-avatar-wrap');
         if (avatarPath && avatarPath !== 'null') {
-            modalAvatarWrap.innerHTML = `<img src="/${avatarPath}" class="avatar">`;
+            const avatarSrc = avatarPath.startsWith('http') ? avatarPath : `/${avatarPath}`;
+            modalAvatarWrap.innerHTML = `<img src="${avatarSrc}" class="avatar">`;
         } else {
             modalAvatarWrap.innerHTML = username.charAt(0).toUpperCase();
         }
@@ -51,15 +52,19 @@ function loadComments(postId) {
 // 1件分のコメントHTMLを組み立てる関数(XSS対策としてエスケープする)
 function buildCommentHtml(comment) {
     const initial = escapeHtml(comment.username.charAt(0).toUpperCase());
-    const avatarHtml = comment.avatarPath
-        ? `<img src="/${escapeHtml(comment.avatarPath)}" class="avatar comment-avatar">`
+    const avatarSrc = comment.avatarPath
+        ? (comment.avatarPath.startsWith('http') ? comment.avatarPath : `/${comment.avatarPath}`)
+        : null;
+    const avatarHtml = avatarSrc
+        ? `<img src="${escapeHtml(avatarSrc)}" class="avatar comment-avatar">`
         : `<div class="avatar comment-avatar">${initial}</div>`;
     let mediaHtml = '';
     if (comment.imagePath) {
+        const mediaSrc = comment.imagePath.startsWith('http') ? comment.imagePath : `/${comment.imagePath}`;
         const isVideo = /\.(mp4|mov|webm)$/i.test(comment.imagePath);
         mediaHtml = isVideo
-            ? `<video src="/${escapeHtml(comment.imagePath)}" class="comment-img" controls></video>`
-            : `<img src="/${escapeHtml(comment.imagePath)}" class="comment-img">`;
+            ? `<video src="${escapeHtml(mediaSrc)}" class="comment-img" controls></video>`
+            : `<img src="${escapeHtml(mediaSrc)}" class="comment-img">`;
     }
     return `
         <div class="comment-item">

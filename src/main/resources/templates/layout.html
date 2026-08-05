@@ -92,7 +92,9 @@
             </div>
             <div class="comment-list" id="comment-list"></div>
             <div class="reply-compose">
-                <img th:if="${avatarPath != null}" th:src="@{'/' + ${avatarPath}}" class="avatar" />
+                <img th:if="${avatarPath != null}"
+                     th:src="${#strings.startsWith(avatarPath, 'http') ? avatarPath : '/' + avatarPath}"
+                     class="avatar" />
                 <div th:unless="${avatarPath != null}" class="avatar" th:text="${#strings.substring(username, 0, 1).toUpperCase()}">Y</div>
                 <form id="commentForm" th:action="@{/comment}" method="post" enctype="multipart/form-data" class="comment-form">
                     <input type="hidden" name="postId" id="modal-post-id" />
