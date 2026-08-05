@@ -27,6 +27,14 @@ public class SupabaseStorageService {
 
     private final RestClient restClient = RestClient.create();
 
+    @jakarta.annotation.PostConstruct
+    public void checkConfig() {
+        System.out.println("SUPABASE_URL = [" + supabaseUrl + "]");
+        System.out.println("SERVICE_KEY length = " + (serviceKey != null ? serviceKey.length() : 0));
+        System.out.println("posts bucket = " + postsBucket);
+        System.out.println("avatar bucket = " + avatarBucket);
+    }
+
     // 投稿用（画像・動画）
     public String upload(MultipartFile file) throws IOException {
         return uploadToBucket(file, postsBucket);
@@ -40,11 +48,14 @@ public class SupabaseStorageService {
     private String uploadToBucket(MultipartFile file, String bucket) throws IOException {
         String extension = getExtension(file.getOriginalFilename());
         String fileName  = UUID.randomUUID() + "." + extension;
+        String uploadUrl = buildUrl("storage/v1/object/" + bucket + "/" + fileName);
+
+        System.out.println("Upload URL = " + uploadUrl); // ★デバッグ用
 
         restClient.post()
-                .uri(supabaseUrl + "storage/v1/object/" + bucket + "/" + fileName)
+                .uri(uploadUrl)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + serviceKey)
-                .header("apikey", serviceKey) // ★これを追加
+                .header("apikey", serviceKey)
                 .header("x-upsert", "true")
                 .contentType(MediaType.parseMediaType(
                         file.getContentType() != null ? file.getContentType() : "application/octet-stream"))
@@ -52,7 +63,15 @@ public class SupabaseStorageService {
                 .retrieve()
                 .toBodilessEntity();
 
-        return supabaseUrl + "storage/v1/object/public/" + bucket + "/" + fileName;
+        return buildUrl("storage/v1/object/public/" + bucket + "/" + fileName);
+    }
+
+    // ★URLを正規化（末尾スラッシュの有無を吸収）
+    private String buildUrl(String path) {
+        String base = supabaseUrl.endsWith("/")
+                ? supabaseUrl.substring(0, supabaseUrl.length() - 1)
+                : supabaseUrl;
+        return base + "/" + path;
     }
 
     private String getExtension(String fileName) {
