@@ -44,6 +44,7 @@ public class SupabaseStorageService {
         restClient.post()
                 .uri(supabaseUrl + "storage/v1/object/" + bucket + "/" + fileName)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + serviceKey)
+                .header("apikey", serviceKey) // ★これを追加
                 .header("x-upsert", "true")
                 .contentType(MediaType.parseMediaType(
                         file.getContentType() != null ? file.getContentType() : "application/octet-stream"))
