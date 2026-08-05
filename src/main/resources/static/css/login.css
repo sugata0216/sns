@@ -168,3 +168,14 @@ h2 {
     color: #1d9bf0;
     text-decoration: none;
 }
+
+.message {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}

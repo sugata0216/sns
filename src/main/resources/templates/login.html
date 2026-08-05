@@ -27,6 +27,9 @@
         <div class="error-msg" th:if="${param.error}">
             メールアドレスまたはパスワードが正しくありません。
         </div>
+        <div class="message" th:if="${param.verified}">
+            メールアドレスの認証が完了しました。ログインしてください。
+        </div>
         <form th:action="@{/login}" method="post" class="login-form">
             <div class="field-wrap">
                 <!--placeholder=" "は必須(CSSの:not(:placeholder-shown)を効かせるため)-->

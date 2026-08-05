@@ -73,12 +73,13 @@ public class UserService {
     public void updateRole(User user) {
         userRepository.updateRole(user);
     }
-    public void verify(String token) {
+    public boolean verify(String token) {
         User user = userRepository.findByVerificationToken(token);
         if (user == null) {
-            throw new IllegalArgumentException("無効な認証トークンです。");
+            return false;
         }
         userRepository.verify(user.getUserId());
+        return true;
     }
     public String requestPasswordReset(String email) {
         User user = userRepository.findByEmail(email);

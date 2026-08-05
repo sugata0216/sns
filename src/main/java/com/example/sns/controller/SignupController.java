@@ -53,8 +53,14 @@ public class SignupController {
         return "signup-complete";
     }
     @GetMapping("/verify")
-    public String verify(String token) {
-        userService.verify(token);
-        return "signup-complete";
+    public String verify(String token, Model model) {
+        boolean success = userService.verify(token);
+
+        if (success) {
+            return "redirect:/login?verified";
+        } else {
+            model.addAttribute("errorMessage", "認証リンクが無効または期限切れです。");
+            return "signup-complete";
+        }
     }
 }
